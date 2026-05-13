@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LINKS } from '../lib/links';
+
+const url = new URL(Astro.request.url);
+const form = url.searchParams.get('form') || '';
+
+const messages: Record<string, { headline: string; copy: string; cta?: { href: string; label: string; ext?: boolean } }> = {
+  contact: {
+    headline: 'Thanks for reaching out.',
+    copy: 'Your message has been received. We\'ll respond as soon as we can — usually within a few business days.'
+  },
+  newsletter: {
+    headline: "You're on the list.",
+    copy: 'Thanks for being part of The Healthy Project community. Look out for the next episode in your inbox.'
+  },
+  partner: {
+    headline: 'Partnership inquiry received.',
+    copy: 'Thanks for your interest in partnering with The Healthy Project Podcast. We\'ll be in touch about next steps.'
+  },
+  speaking: {
+    headline: 'Speaking inquiry received.',
+    copy: 'Thanks for considering Corey for your event. We\'ll review the details and respond shortly.'
+  },
+  guest: {
+    headline: 'Guest pitch received.',
+    copy: 'Thanks for sharing this. We read every pitch and will be in touch if it\'s a fit for an upcoming episode.'
+  },
+  'reviews-note': {
+    headline: 'Thank you for sharing this.',
+    copy: 'Your words help shape future episodes. Now if you have a minute, leave a public review on Apple Podcasts.',
+    cta: { href: LINKS.applePodcasts, label: 'Leave a Review on Apple Podcasts', ext: true }
+  }
+};
+
+const m = messages[form] || {
+  headline: 'Thanks!',
+  copy: 'Your submission has been received.'
+};
+---
+<BaseLayout title="Thank you" description="Thanks for getting in touch with The Healthy Project Podcast.">
+  <section class="thanks section-dark">
+    <div class="container container-narrow">
+      <span class="eyebrow">Thank you</span>
+      <h1>{m.headline}</h1>
+      <p class="lead" style="color: rgba(255,255,255,.82);">{m.copy}</p>
+
+      <div class="thanks-actions">
+        {m.cta ? (
+          m.cta.ext ? (
+            <a href={m.cta.href} target="_blank" rel="noopener" class="btn btn-accent">{m.cta.label}</a>
+          ) : (
+            <a href={m.cta.href} class="btn btn-accent">{m.cta.label}</a>
+          )
+        ) : null}
+        <a href="/" class="btn btn-ghost-light">Return Home</a>
+        <a href="/episodes" class="btn btn-ghost-light">Browse Episodes</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .thanks { padding: 7rem 0; min-height: 60vh; }
+  .thanks h1 { color: var(--bg); }
+  .thanks-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+</style>

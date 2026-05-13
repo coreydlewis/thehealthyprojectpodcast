@@ -1,0 +1,412 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EpisodePlayer from '../components/EpisodePlayer.astro';
+import EpisodeCard from '../components/EpisodeCard.astro';
+import PlatformLinks from '../components/PlatformLinks.astro';
+import NewsletterCTA from '../components/NewsletterCTA.astro';
+import ReviewCTA from '../components/ReviewCTA.astro';
+import { getAllEpisodes } from '../lib/episodes';
+import { LINKS, SITE } from '../lib/links';
+
+const all = await getAllEpisodes();
+const latest = all[0] || null;
+const featured = all.slice(1, 5);
+
+// JSON-LD schema for the show
+const podcastSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'PodcastSeries',
+  name: SITE.title,
+  description: SITE.tagline,
+  url: SITE.url,
+  author: { '@type': 'Person', name: SITE.host },
+  webFeed: LINKS.rss
+};
+---
+<BaseLayout
+  title="Public Health, Health Equity & Community Stories"
+  description="A documentary-style audio archive of how communities confront structural health inequities. Hosted by Corey Dion Lewis."
+  schema={podcastSchema}
+>
+  <!-- HERO ------------------------------------------------------------ -->
+  <section class="hero section-dark">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <span class="eyebrow">The Healthy Project Podcast</span>
+        <h1>Public health, told through the people doing the work.</h1>
+        <p class="hero-tagline">
+          A documentary-style audio archive of how communities confront structural health inequities.
+        </p>
+        <p class="hero-body">
+          Hosted by Corey Dion Lewis, the show shares conversations with public health leaders,
+          community advocates, researchers, clinicians, and everyday changemakers working to
+          build healthier communities. This is where public health meets storytelling, culture,
+          prevention, and lived experience.
+        </p>
+        <div class="hero-cta">
+          {latest ? (
+            <a href={latest.url} class="btn btn-accent">Listen to Latest Episode</a>
+          ) : (
+            <a href="/episodes" class="btn btn-accent">Browse Episodes</a>
+          )}
+          <a href="/episodes" class="btn btn-ghost-light">Browse Episodes</a>
+          <a href={LINKS.applePodcasts} target="_blank" rel="noopener" class="btn btn-ghost-light">Leave a Review</a>
+          <a href="/partner" class="btn btn-ghost-light">Partner With Us</a>
+        </div>
+        <div class="hero-platforms">
+          <PlatformLinks dark label="Listen on:" />
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        {latest?.imageUrl && (
+          <img src={latest.imageUrl} alt="" width="500" height="500" />
+        )}
+        <div class="hero-visual-stamp">
+          <span>Documentary-style</span>
+          <span>Public health</span>
+          <span>Community voice</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LATEST EPISODE -------------------------------------------------- -->
+  {latest && (
+    <section class="section" id="latest">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Latest Episode</span>
+          <h2>Listen to the latest episode</h2>
+          <p>Press play and hear the newest conversation from The Healthy Project Podcast.</p>
+        </div>
+        <EpisodePlayer episode={latest} />
+      </div>
+    </section>
+  )}
+
+  <!-- ABOUT THE SHOW -------------------------------------------------- -->
+  <section class="section section-alt">
+    <div class="container about-grid">
+      <div>
+        <span class="eyebrow">About the show</span>
+        <h2>Stories that make public health human.</h2>
+      </div>
+      <div>
+        <p>
+          The Healthy Project Podcast explores the people, policies, systems, and community
+          efforts shaping health outcomes. Each episode goes beyond surface-level wellness talk.
+          We look at the conditions that impact how people live, work, heal, and access care.
+        </p>
+        <p><strong>Topics include:</strong></p>
+        <ul class="topics-list">
+          <li>Health equity</li>
+          <li>Social determinants of health</li>
+          <li>Community health</li>
+          <li>Prevention</li>
+          <li>Mental health</li>
+          <li>Chronic disease</li>
+          <li>Food access</li>
+          <li>Public health leadership</li>
+          <li>Culture and storytelling</li>
+        </ul>
+        <a href="/about" class="btn btn-primary">Learn More About the Show</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED TOPICS ------------------------------------------------- -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">What we talk about</span>
+        <h2>Four threads that run through the show.</h2>
+      </div>
+
+      <div class="topics-grid">
+        <article class="topic-card">
+          <div class="topic-num">01</div>
+          <h3>Health Equity</h3>
+          <p>Conversations about justice, access, and the systems that shape health.</p>
+        </article>
+        <article class="topic-card">
+          <div class="topic-num">02</div>
+          <h3>Community Health</h3>
+          <p>Stories from the people doing the work inside neighborhoods, clinics, nonprofits, and public health organizations.</p>
+        </article>
+        <article class="topic-card">
+          <div class="topic-num">03</div>
+          <h3>Prevention</h3>
+          <p>Practical conversations about helping people live healthier lives before a crisis happens.</p>
+        </article>
+        <article class="topic-card">
+          <div class="topic-num">04</div>
+          <h3>Culture &amp; Storytelling</h3>
+          <p>Public health told through lived experience, creativity, identity, and community voice.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED EPISODES ----------------------------------------------- -->
+  {featured.length > 0 && (
+    <section class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Recent conversations</span>
+          <h2>More from the archive</h2>
+        </div>
+        <div class="ep-grid">
+          {featured.map((ep) => <EpisodeCard episode={ep} />)}
+        </div>
+        <div class="section-cta">
+          <a href="/episodes" class="btn btn-ghost">Browse All Episodes</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- SOCIAL PROOF ---------------------------------------------------- -->
+  <section class="section section-dark">
+    <div class="container social-proof">
+      <span class="eyebrow">A trusted voice in public health media</span>
+      <h2>Featured conversations with leaders across public health and community.</h2>
+      <p>
+        The Healthy Project Podcast has featured conversations with national public health
+        leaders, healthcare executives, community advocates, researchers, and storytellers
+        working to improve health outcomes.
+      </p>
+
+      <ul class="proof-stats">
+        <li>
+          <strong>Top 200</strong>
+          <span>US Medicine — Apple Podcasts</span>
+        </li>
+        <li>
+          <strong>Top 5</strong>
+          <span>Health Policy</span>
+        </li>
+        <li>
+          <strong>Top 2</strong>
+          <span>Global Health</span>
+        </li>
+        <li>
+          <strong>194+</strong>
+          <span>Episodes published</span>
+        </li>
+      </ul>
+
+      <div class="proof-cta">
+        <a href="/invite-corey" class="btn btn-accent">Invite Corey to Speak</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEW CTA ------------------------------------------------------ -->
+  <ReviewCTA />
+
+  <!-- PARTNER CTA ----------------------------------------------------- -->
+  <section class="section partner-cta">
+    <div class="container partner-inner">
+      <div>
+        <span class="eyebrow">Partner with us</span>
+        <h2>Reach an audience that cares about health, equity, and community.</h2>
+        <p>
+          The Healthy Project Podcast connects with public health professionals, healthcare leaders,
+          community advocates, nonprofits, educators, and students working to improve health outcomes.
+        </p>
+      </div>
+      <div class="partner-actions">
+        <a href="/partner" class="btn btn-primary">Explore Partnerships</a>
+        <a href="/contact" class="btn btn-ghost">Send a Message</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER ------------------------------------------------------ -->
+  <NewsletterCTA />
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .hero { padding: 7rem 0 6rem; }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (max-width: 980px) { .hero-inner { grid-template-columns: 1fr; gap: 3rem; } }
+
+  .hero h1 {
+    color: var(--bg);
+    margin-bottom: 1.25rem;
+  }
+  .hero-tagline {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    color: var(--gold);
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+  }
+  .hero-body {
+    color: rgba(255,255,255,0.78);
+    max-width: 56ch;
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-visual {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--bg-deep);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .hero-visual img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-visual-stamp {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+  }
+  .hero-visual-stamp span {
+    display: inline-block;
+    background: rgba(245,240,230,0.95);
+    color: var(--ink);
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    padding: .35rem .7rem;
+    border-radius: 999px;
+  }
+
+  /* Section head */
+  .section-head {
+    margin-bottom: 3rem;
+    max-width: 720px;
+  }
+  .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+  .section-head p { color: var(--ink-soft); font-size: 1.05rem; }
+
+  /* About */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  @media (max-width: 880px) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+  .topics-list {
+    columns: 2;
+    column-gap: 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.75rem;
+  }
+  .topics-list li {
+    padding: .4rem 0;
+    border-bottom: 1px solid var(--border);
+    break-inside: avoid;
+    font-weight: 500;
+  }
+
+  /* Topic cards */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 980px) { .topics-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .topics-grid { grid-template-columns: 1fr; } }
+
+  .topic-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.6rem;
+    transition: border-color .2s var(--ease), transform .2s var(--ease);
+  }
+  .topic-card:hover { border-color: var(--ink); transform: translateY(-3px); }
+  .topic-num {
+    font-family: var(--font-display);
+    color: var(--gold-deep);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.06em;
+  }
+  .topic-card h3 { font-size: 1.4rem; margin-bottom: .6rem; }
+  .topic-card p { color: var(--ink-soft); font-size: .98rem; margin: 0; }
+
+  /* Episodes grid */
+  .ep-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 880px) { .ep-grid { grid-template-columns: 1fr; } }
+
+  .section-cta { text-align: center; margin-top: 3rem; }
+
+  /* Social proof */
+  .social-proof { text-align: center; max-width: 900px; margin: 0 auto; }
+  .social-proof h2 { color: var(--bg); }
+  .social-proof p { color: rgba(255,255,255,0.75); max-width: 60ch; margin: 0 auto 2.5rem; }
+
+  .proof-stats {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 720px) { .proof-stats { grid-template-columns: repeat(2, 1fr); } }
+  .proof-stats li {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1rem;
+  }
+  .proof-stats strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    color: var(--gold);
+    margin-bottom: .25rem;
+  }
+  .proof-stats span {
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.65);
+  }
+
+  .proof-cta { display: flex; justify-content: center; }
+
+  /* Partner CTA */
+  .partner-cta { background: var(--bg); border-top: 1px solid var(--border); }
+  .partner-inner {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 880px) { .partner-inner { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .partner-cta h2 { margin-bottom: 1rem; }
+  .partner-cta p { color: var(--ink-soft); max-width: 56ch; }
+  .partner-actions { display: flex; flex-direction: column; gap: .75rem; align-items: flex-end; }
+  @media (max-width: 880px) { .partner-actions { align-items: flex-start; flex-direction: row; flex-wrap: wrap; } }
+</style>

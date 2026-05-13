@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page Not Found" description="That page doesn't exist.">
+  <section class="nf section-dark">
+    <div class="container container-narrow center">
+      <span class="eyebrow">404</span>
+      <h1>That episode wandered off.</h1>
+      <p class="lead" style="color: rgba(255,255,255,.82);">
+        The page you're looking for doesn't exist — or hasn't been recorded yet.
+      </p>
+      <div class="nf-actions">
+        <a href="/" class="btn btn-accent">Return Home</a>
+        <a href="/episodes" class="btn btn-ghost-light">Browse Episodes</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf { padding: 8rem 0; min-height: 70vh; }
+  .nf h1 { color: var(--bg); }
+  .nf-actions { display: flex; justify-content: center; gap: .75rem; margin-top: 2rem; flex-wrap: wrap; }
+</style>

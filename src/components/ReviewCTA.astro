@@ -1,0 +1,61 @@
+---
+import { LINKS } from '../lib/links';
+export interface Props {
+  variant?: 'default' | 'dark';
+  headline?: string;
+  copy?: string;
+}
+const {
+  variant = 'default',
+  headline = 'Enjoying the podcast?',
+  copy = 'Your review helps more people discover these conversations. Take 60 seconds to rate and review The Healthy Project Podcast on Apple Podcasts.'
+} = Astro.props as Props;
+---
+<section class:list={['review-cta', variant]}>
+  <div class="container review-inner">
+    <div>
+      <span class="eyebrow">Show some love</span>
+      <h2>{headline}</h2>
+      <p>{copy}</p>
+    </div>
+    <div class="review-actions">
+      <a href={LINKS.applePodcasts} target="_blank" rel="noopener" class="btn btn-accent">
+        Leave a Review on Apple Podcasts
+      </a>
+      <a href="/reviews" class="btn btn-ghost">How to Review</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .review-cta { padding: 5rem 0; background: var(--bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .review-cta.dark { background: var(--bg-deep); color: var(--bg); border-color: transparent; }
+  .review-cta.dark h2 { color: var(--bg); }
+  .review-cta.dark p { color: rgba(255,255,255,0.78); }
+  .review-cta.dark .eyebrow { color: var(--gold); }
+  .review-cta.dark .btn-ghost { color: var(--bg); border-color: rgba(255,255,255,0.6); }
+  .review-cta.dark .btn-ghost:hover { background: var(--bg); color: var(--ink); }
+
+  .review-inner {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 800px) {
+    .review-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+  .review-inner h2 { margin-bottom: .8rem; }
+  .review-inner p { max-width: 56ch; color: var(--ink-soft); }
+  .review-cta.dark p { color: rgba(255,255,255,.78); }
+
+  .review-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: .75rem;
+  }
+  @media (max-width: 800px) {
+    .review-actions { align-items: flex-start; }
+  }
+</style>

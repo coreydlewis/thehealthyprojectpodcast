@@ -1,0 +1,75 @@
+---
+import { LINKS } from '../lib/links';
+export interface Props {
+  label?: string;
+  variant?: 'default' | 'compact';
+  dark?: boolean;
+}
+const { label = 'Listen on:', variant = 'default', dark = false } = Astro.props as Props;
+---
+<div class:list={['platform-links', variant, { dark }]}>
+  <span class="platform-label">{label}</span>
+  <ul>
+    <li><a href={LINKS.applePodcasts} target="_blank" rel="noopener">Apple Podcasts</a></li>
+    <li><a href={LINKS.spotify} target="_blank" rel="noopener">Spotify</a></li>
+    <li><a href={LINKS.youtube} target="_blank" rel="noopener">YouTube</a></li>
+    <li><a href={LINKS.rss} target="_blank" rel="noopener">RSS</a></li>
+  </ul>
+</div>
+
+<style>
+  .platform-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .85rem 1.2rem;
+  }
+  .platform-label {
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .platform-links.dark .platform-label { color: var(--gold); }
+  .platform-links ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .55rem;
+  }
+  .platform-links a {
+    display: inline-flex;
+    align-items: center;
+    padding: .45rem .9rem;
+    font-size: .85rem;
+    font-weight: 600;
+    border-radius: 999px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    text-decoration: none;
+    transition: background .15s var(--ease), color .15s var(--ease), border-color .15s var(--ease);
+  }
+  .platform-links a:hover {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+  .platform-links.dark a {
+    background: transparent;
+    border-color: rgba(255,255,255,0.25);
+    color: var(--bg);
+  }
+  .platform-links.dark a:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+  .platform-links.compact a {
+    font-size: .78rem;
+    padding: .35rem .7rem;
+  }
+</style>

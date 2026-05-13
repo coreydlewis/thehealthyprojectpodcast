@@ -1,0 +1,134 @@
+---
+import PlatformLinks from './PlatformLinks.astro';
+import type { Episode } from '../lib/episodes';
+
+export interface Props {
+  episode: Episode;
+  /** Show the platform-links row below the player */
+  showPlatforms?: boolean;
+  /** Compact mode (smaller artwork) */
+  compact?: boolean;
+}
+const { episode, showPlatforms = true, compact = false } = Astro.props as Props;
+---
+<article class:list={['episode-player', { compact }]}>
+  <div class="ep-artwork">
+    {episode.imageUrl && (
+      <img src={episode.imageUrl} alt={`Artwork for ${episode.title}`} width="320" height="320" loading="lazy" />
+    )}
+  </div>
+
+  <div class="ep-body">
+    <div class="ep-meta">
+      {episode.number && <span class="ep-number">Episode {episode.number}</span>}
+      <span class="ep-date">{episode.pubDateDisplay}</span>
+      {episode.durationDisplay && <span class="ep-duration">{episode.durationDisplay}</span>}
+    </div>
+
+    <h3 class="ep-title">{episode.title}</h3>
+    <p class="ep-excerpt">{episode.excerpt}</p>
+
+    {episode.audioUrl ? (
+      <audio controls preload="none" class="ep-audio" src={episode.audioUrl}>
+        Your browser does not support the audio element.
+        <a href={episode.audioUrl}>Download the audio</a>
+      </audio>
+    ) : (
+      <p class="muted">Audio is loading… check back shortly.</p>
+    )}
+
+    <div class="ep-cta">
+      <a href={episode.url} class="btn btn-ghost">View Show Notes</a>
+    </div>
+
+    {showPlatforms && (
+      <div class="ep-platforms">
+        <PlatformLinks variant="compact" />
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .episode-player {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0;
+  }
+
+  @media (max-width: 880px) {
+    .episode-player { grid-template-columns: 1fr; }
+  }
+
+  .ep-artwork {
+    background: var(--bg-alt);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+  }
+  .ep-artwork img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (max-width: 880px) {
+    .ep-artwork { max-height: 360px; aspect-ratio: auto; }
+  }
+
+  .ep-body {
+    padding: 2rem 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .65rem;
+  }
+  @media (max-width: 600px) {
+    .ep-body { padding: 1.5rem 1.25rem; }
+  }
+
+  .ep-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .ep-number { color: var(--gold-deep); }
+
+  .ep-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    margin: .25rem 0 .5rem;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+
+  .ep-excerpt {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .ep-audio {
+    width: 100%;
+    margin-top: .5rem;
+    border-radius: 6px;
+  }
+
+  .ep-cta { margin-top: 1.25rem; }
+
+  .ep-platforms {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .compact .ep-body { padding: 1.25rem 1.5rem; }
+  .compact .ep-title { font-size: 1.25rem; }
+</style>

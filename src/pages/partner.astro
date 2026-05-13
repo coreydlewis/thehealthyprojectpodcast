@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Partner With The Healthy Project Podcast"
+  description="Sponsor episodes, series, or live events with The Healthy Project Podcast. Reach an audience that cares about health equity, prevention, and community impact."
+>
+  <section class="partner-hero section-dark">
+    <div class="container container-narrow">
+      <span class="eyebrow">Partner</span>
+      <h1>Partner with The Healthy Project Podcast</h1>
+      <p class="lead" style="color: rgba(255,255,255,.82);">
+        Reach an audience that cares about health equity, prevention, public health,
+        and community impact.
+      </p>
+      <a href="#partner-inquiry" class="btn btn-accent" style="margin-top: 1rem;">
+        Request Partnership Info
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow prose">
+      <p>
+        The Healthy Project Podcast connects with public health professionals, healthcare
+        leaders, community advocates, nonprofits, educators, students, and people working
+        to improve health outcomes.
+      </p>
+      <p>
+        Partnership opportunities are designed for organizations that want to support
+        meaningful conversations and reach an audience that values trust, community, and action.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Ways to partner</span>
+        <h2>Five ways we work with partners.</h2>
+      </div>
+
+      <div class="partner-grid">
+        <article class="partner-card">
+          <h3>Episode Sponsorship</h3>
+          <p>Sponsor a specific episode aligned with your mission or focus area.</p>
+        </article>
+        <article class="partner-card">
+          <h3>Series Sponsorship</h3>
+          <p>Support a themed series around topics like health equity, mental health, chronic disease, prevention, or community health.</p>
+        </article>
+        <article class="partner-card">
+          <h3>Newsletter Sponsorship</h3>
+          <p>Reach the Healthy Project audience through email features and episode highlights.</p>
+        </article>
+        <article class="partner-card">
+          <h3>Sponsored Conversation</h3>
+          <p>Collaborate on a mission-aligned conversation that educates and informs the audience.</p>
+        </article>
+        <article class="partner-card">
+          <h3>Speaking &amp; Live Events</h3>
+          <p>Bring Corey in to host, moderate, speak, or record live conversations.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section audience">
+    <div class="container audience-grid">
+      <div>
+        <span class="eyebrow">Who you'll reach</span>
+        <h2>An engaged community across public health and community impact.</h2>
+        <p>The Healthy Project audience includes:</p>
+      </div>
+      <ul class="audience-list">
+        <li>Public health professionals</li>
+        <li>Healthcare leaders</li>
+        <li>Community-based organizations</li>
+        <li>Nonprofit leaders</li>
+        <li>Health equity advocates</li>
+        <li>Students and early-career professionals</li>
+        <li>Wellness and prevention professionals</li>
+        <li>People interested in community health and social impact</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="partner-inquiry" class="section section-alt">
+    <div class="container container-narrow">
+      <span class="eyebrow">Get in touch</span>
+      <h2>Submit a partnership inquiry</h2>
+      <p>Tell us a little about your organization and what you're hoping to do together. We'll be in touch.</p>
+
+      <form
+        class="form-grid"
+        name="partner"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        action="/thanks/?form=partner"
+      >
+        <input type="hidden" name="form-name" value="partner" />
+        <p class="hp-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="p-name">Name</label>
+            <input id="p-name" type="text" name="name" required />
+          </div>
+          <div class="field">
+            <label for="p-org">Organization</label>
+            <input id="p-org" type="text" name="organization" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="p-email">Email</label>
+            <input id="p-email" type="email" name="email" required />
+          </div>
+          <div class="field">
+            <label for="p-interest">Partnership Interest</label>
+            <select id="p-interest" name="partnership_interest" required>
+              <option value="">Select an option</option>
+              <option>Episode Sponsorship</option>
+              <option>Series Sponsorship</option>
+              <option>Newsletter Sponsorship</option>
+              <option>Sponsored Conversation</option>
+              <option>Speaking &amp; Live Events</option>
+              <option>Something else</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="p-budget">Budget Range</label>
+          <select id="p-budget" name="budget_range">
+            <option value="">Prefer not to say</option>
+            <option>Under $5,000</option>
+            <option>$5,000 – $10,000</option>
+            <option>$10,000 – $25,000</option>
+            <option>$25,000 – $50,000</option>
+            <option>$50,000+</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="p-msg">Message</label>
+          <textarea id="p-msg" name="message" required placeholder="Tell us about your goals and timeline."></textarea>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-accent">Submit Partnership Inquiry</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .partner-hero { padding: 5rem 0 4rem; }
+  .partner-hero h1 { color: var(--bg); }
+
+  .section-head { margin-bottom: 2.5rem; }
+
+  .partner-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  @media (max-width: 980px) { .partner-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .partner-grid { grid-template-columns: 1fr; } }
+
+  .partner-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    transition: border-color .2s var(--ease), transform .2s var(--ease);
+  }
+  .partner-card:hover { border-color: var(--ink); transform: translateY(-2px); }
+  .partner-card h3 { font-size: 1.3rem; margin-bottom: .5rem; }
+  .partner-card p { color: var(--ink-soft); margin: 0; }
+
+  .audience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 800px) { .audience-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .audience h2 { margin-bottom: 1rem; }
+
+  .audience-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .audience-list li {
+    padding: .8rem 0;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+</style>

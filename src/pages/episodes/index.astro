@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import { getAllEpisodes, ALL_TOPICS } from '../../lib/episodes';
+import { SITE } from '../../lib/links';
+
+const episodes = await getAllEpisodes();
+
+// Only show filter chips for topics that actually appear in episodes
+const usedTopics = new Set<string>();
+for (const ep of episodes) {
+  for (const c of ep.categories) usedTopics.add(c);
+}
+const filterTopics = ALL_TOPICS.filter((t) => usedTopics.has(t));
+---
+<BaseLayout
+  title="Podcast Episodes"
+  description="Listen to every episode of The Healthy Project Podcast. Conversations with public health leaders, community advocates, and storytellers."
+>
+  <section class="ep-header section-dark">
+    <div class="container">
+      <span class="eyebrow">All episodes</span>
+      <h1>Explore episodes</h1>
+      <p class="lead" style="color: rgba(255,255,255,.8); max-width: 60ch;">
+        Listen to conversations with public health leaders, community advocates, clinicians,
+        researchers, and storytellers working to build healthier communities.
+      </p>
+    </div>
+  </section>
+
+  <section class="ep-controls">
+    <div class="container">
+      <div class="search-row">
+        <label class="search-field">
+          <span class="visually-hidden">Search episodes</span>
+          <input
+            id="epSearch"
+            type="search"
+            placeholder="Search by guest, topic, or keyword"
+            autocomplete="off"
+            aria-label="Search episodes"
+          />
+        </label>
+        <div class="search-meta">
+          <span id="epCount">{episodes.length} episode{episodes.length === 1 ? '' : 's'}</span>
+          <button type="button" id="clearFilters" class="link-btn" hidden>Clear filters</button>
+        </div>
+      </div>
+
+      <div class="filter-row" role="group" aria-label="Filter by topic">
+        <button type="button" class="filter-chip active" data-filter="all">All Topics</button>
+        {filterTopics.map((t) => (
+          <button type="button" class="filter-chip" data-filter={t}>{t}</button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="ep-list-section">
+    <div class="container">
+      <div id="epList" class="ep-grid">
+        {episodes.map((ep) => <EpisodeCard episode={ep} />)}
+      </div>
+
+      <div id="epEmpty" class="ep-empty" hidden>
+        <h3>No episodes match those filters.</h3>
+        <p>Try a different search term, or clear the filters to see all episodes.</p>
+        <button type="button" id="clearEmpty" class="btn btn-ghost">Reset filters</button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ep-header { padding: 5rem 0 3.5rem; }
+  .ep-header h1 { color: var(--bg); margin-bottom: 1rem; }
+
+  .ep-controls {
+    background: var(--bg-alt);
+    padding: 2rem 0 1.75rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 73px;
+    z-index: 50;
+  }
+
+  .search-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 720px) {
+    .search-row { flex-direction: column; align-items: stretch; }
+  }
+
+  .search-field {
+    flex: 1;
+    max-width: 560px;
+    display: block;
+  }
+  .search-field input {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: .85rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--white);
+  }
+  .search-field input:focus {
+    outline: none;
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px rgba(200,147,43,0.22);
+  }
+
+  .search-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: .9rem;
+    color: var(--ink-soft);
+  }
+  .link-btn {
+    background: transparent;
+    border: 0;
+    color: var(--clay);
+    cursor: pointer;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .filter-chip {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: .45rem .9rem;
+    font-family: var(--font-body);
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background .15s var(--ease), color .15s var(--ease), border-color .15s var(--ease);
+  }
+  .filter-chip:hover { border-color: var(--ink); color: var(--ink); }
+  .filter-chip.active {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  .ep-list-section { padding: 3rem 0 5rem; }
+
+  .ep-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .ep-empty {
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+  .ep-empty p { color: var(--ink-soft); margin-bottom: 1.5rem; }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0);
+    white-space: nowrap; border: 0;
+  }
+
+  @media (max-width: 720px) {
+    .ep-controls { position: static; }
+  }
+</style>
+
+<script>
+  const input = document.getElementById('epSearch') as HTMLInputElement | null;
+  const list = document.getElementById('epList');
+  const countEl = document.getElementById('epCount');
+  const emptyEl = document.getElementById('epEmpty');
+  const clearBtn = document.getElementById('clearFilters');
+  const clearEmpty = document.getElementById('clearEmpty');
+  const chips = document.querySelectorAll<HTMLButtonElement>('.filter-chip');
+
+  const allCards = Array.from(list?.querySelectorAll<HTMLElement>('.ep-card') ?? []);
+  let activeFilter = 'all';
+  let query = '';
+
+  function matches(card: HTMLElement): boolean {
+    const title = card.dataset.title || '';
+    const tags = card.dataset.tags || '';
+    const keywords = card.dataset.keywords || '';
+    const guest = card.dataset.guest || '';
+
+    if (activeFilter !== 'all') {
+      if (!tags.split('|').includes(activeFilter.toLowerCase())) return false;
+    }
+    if (query) {
+      const haystack = `${title} ${tags} ${keywords} ${guest}`;
+      if (!haystack.includes(query)) return false;
+    }
+    return true;
+  }
+
+  function applyFilters() {
+    let visible = 0;
+    for (const card of allCards) {
+      const show = matches(card);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    }
+
+    if (countEl) {
+      countEl.textContent = `${visible} ${visible === 1 ? 'episode' : 'episodes'}`;
+    }
+    if (emptyEl) emptyEl.hidden = visible !== 0;
+    if (list) (list as HTMLElement).hidden = visible === 0;
+
+    if (clearBtn) {
+      const dirty = activeFilter !== 'all' || query.length > 0;
+      clearBtn.hidden = !dirty;
+    }
+  }
+
+  function resetAll() {
+    activeFilter = 'all';
+    query = '';
+    if (input) input.value = '';
+    chips.forEach((c) => c.classList.toggle('active', c.dataset.filter === 'all'));
+    applyFilters();
+  }
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.filter || 'all';
+      applyFilters();
+    });
+  });
+
+  input?.addEventListener('input', () => {
+    query = (input.value || '').trim().toLowerCase();
+    applyFilters();
+  });
+
+  clearBtn?.addEventListener('click', resetAll);
+  clearEmpty?.addEventListener('click', resetAll);
+</script>

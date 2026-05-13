@@ -1,0 +1,122 @@
+---
+import { LINKS, SITE } from '../lib/links';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>The Healthy Project Podcast</h3>
+        <p>{SITE.tagline}</p>
+        <p class="footer-host">Hosted by Corey Dion Lewis</p>
+      </div>
+
+      <div>
+        <h4>Listen</h4>
+        <ul class="footer-list">
+          <li><a href={LINKS.applePodcasts} target="_blank" rel="noopener">Apple Podcasts</a></li>
+          <li><a href={LINKS.spotify} target="_blank" rel="noopener">Spotify</a></li>
+          <li><a href={LINKS.youtube} target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href={LINKS.rss} target="_blank" rel="noopener">RSS Feed</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Follow</h4>
+        <ul class="footer-list">
+          <li><a href={LINKS.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href={LINKS.instagram} target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href={LINKS.substack} target="_blank" rel="noopener">Substack Newsletter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Connect</h4>
+        <ul class="footer-list">
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/partner">Partner With Us</a></li>
+          <li><a href="/invite-corey">Invite Corey to Speak</a></li>
+          <li><a href="/guest">Be a Guest</a></li>
+          <li><a href="/newsletter">Newsletter</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-meta">
+      <span>© {year} Healthy Project Media. All rights reserved.</span>
+      <span>Made with care in Des Moines, Iowa.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--bg-deep);
+    color: var(--bg);
+    padding: 4.5rem 0 2rem;
+    margin-top: 5rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 880px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 520px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .footer-brand h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--bg);
+    margin-bottom: .75rem;
+  }
+  .footer-brand p { color: rgba(255,255,255,0.72); font-size: .95rem; max-width: 32ch; }
+  .footer-host {
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-top: 1rem;
+    color: var(--gold);
+  }
+
+  .site-footer h4 {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: .78rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .footer-list { list-style: none; padding: 0; margin: 0; }
+  .footer-list li { margin-bottom: .55rem; }
+  .footer-list a {
+    color: rgba(255,255,255,0.78);
+    text-decoration: none;
+    font-size: .94rem;
+    transition: color .15s var(--ease);
+  }
+  .footer-list a:hover { color: var(--gold); }
+
+  .footer-meta {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: .82rem;
+    color: rgba(255,255,255,0.55);
+  }
+  @media (max-width: 600px) {
+    .footer-meta { flex-direction: column; gap: .5rem; }
+  }
+</style>

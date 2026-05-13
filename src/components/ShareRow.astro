@@ -1,0 +1,58 @@
+---
+import { SITE } from '../lib/links';
+export interface Props {
+  title: string;
+  url: string;
+}
+const { title, url } = Astro.props as Props;
+const fullUrl = url.startsWith('http') ? url : new URL(url, SITE.url).toString();
+const enc = (s: string) => encodeURIComponent(s);
+---
+<div class="share-row" data-url={fullUrl}>
+  <a target="_blank" rel="noopener" class="share-btn" href={`https://www.linkedin.com/sharing/share-offsite/?url=${enc(fullUrl)}`}>LinkedIn</a>
+  <a target="_blank" rel="noopener" class="share-btn" href={`https://www.facebook.com/sharer/sharer.php?u=${enc(fullUrl)}`}>Facebook</a>
+  <a target="_blank" rel="noopener" class="share-btn" href={`https://twitter.com/intent/tweet?text=${enc(title)}&url=${enc(fullUrl)}`}>X (Twitter)</a>
+  <button type="button" class="share-btn copy-link" data-copy={fullUrl}>Copy Link</button>
+</div>
+
+<style>
+  .share-row { display: flex; flex-wrap: wrap; gap: .55rem; }
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: background .15s var(--ease), color .15s var(--ease), border-color .15s var(--ease);
+  }
+  .share-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .share-btn.copied { background: var(--green); color: var(--bg); border-color: var(--green); }
+</style>
+
+<script>
+  document.querySelectorAll('.copy-link').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const url = btn.getAttribute('data-copy') || '';
+      try {
+        await navigator.clipboard.writeText(url);
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 1800);
+      } catch (e) {
+        // Fallback: do nothing fancy
+        window.prompt('Copy this link:', url);
+      }
+    });
+  });
+</script>

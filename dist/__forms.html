@@ -1,0 +1,74 @@
+<!--
+  Netlify Forms detection file.
+  Astro renders forms inside `.astro` components which Netlify's HTML parser may not always
+  pick up at build time. Repeating each form here (with matching `name` and inputs) guarantees
+  Netlify registers them. This page is never linked from the site.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Forms</title>
+  <meta name="robots" content="noindex" />
+</head>
+<body>
+  <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <select name="reason"><option>x</option></select>
+    <textarea name="message"></textarea>
+    <input name="bot-field" />
+  </form>
+
+  <form name="newsletter" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="first_name" />
+    <input type="email" name="email" />
+    <input name="bot-field" />
+  </form>
+
+  <form name="partner" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="text" name="organization" />
+    <input type="email" name="email" />
+    <select name="partnership_interest"><option>x</option></select>
+    <select name="budget_range"><option>x</option></select>
+    <textarea name="message"></textarea>
+    <input name="bot-field" />
+  </form>
+
+  <form name="speaking" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="text" name="organization" />
+    <input type="email" name="email" />
+    <input type="date" name="event_date" />
+    <input type="text" name="event_location" />
+    <select name="speaking_format"><option>x</option></select>
+    <input type="text" name="topic" />
+    <input type="text" name="budget" />
+    <textarea name="message"></textarea>
+    <input name="bot-field" />
+  </form>
+
+  <form name="guest" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="organization" />
+    <input type="text" name="role" />
+    <input type="url" name="website" />
+    <input type="text" name="topic" />
+    <textarea name="why_now"></textarea>
+    <textarea name="previous_media"></textarea>
+    <textarea name="extra"></textarea>
+    <input name="bot-field" />
+  </form>
+
+  <form name="reviews-note" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <select name="rating"><option>x</option></select>
+    <input type="text" name="favorite_episode" />
+    <textarea name="message"></textarea>
+    <input name="bot-field" />
+  </form>
+</body>
+</html>

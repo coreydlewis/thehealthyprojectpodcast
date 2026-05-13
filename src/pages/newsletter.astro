@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LINKS } from '../lib/links';
+---
+<BaseLayout
+  title="Join The Healthy Project Email List"
+  description="Get new episodes, public health stories, reflections, and resources sent to your inbox."
+>
+  <section class="nl-hero section-dark">
+    <div class="container container-narrow">
+      <span class="eyebrow">Newsletter</span>
+      <h1>Join The Healthy Project email list</h1>
+      <p class="lead" style="color: rgba(255,255,255,.82);">
+        Get new episodes, public health stories, reflections, and resources sent to your inbox.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow prose">
+      <p>
+        The Healthy Project email list is for people who care about health equity, prevention,
+        community health, and the stories behind the data.
+      </p>
+      <p>
+        You'll receive updates on new podcast episodes, featured conversations, resources,
+        and ideas you can use in your work.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container container-narrow">
+      <form
+        class="form-grid nl-page-form"
+        name="newsletter"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        action="/thanks/?form=newsletter"
+      >
+        <input type="hidden" name="form-name" value="newsletter" />
+        <p class="hp-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="np-first">First Name</label>
+            <input id="np-first" type="text" name="first_name" autocomplete="given-name" required />
+          </div>
+          <div class="field">
+            <label for="np-email">Email Address</label>
+            <input id="np-email" type="email" name="email" autocomplete="email" required />
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-accent">Join the List</button>
+        </div>
+        <p class="form-note">
+          Already on Substack? <a href={LINKS.substack} target="_blank" rel="noopener">Subscribe over there</a> instead.
+        </p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nl-hero { padding: 5rem 0 4rem; }
+  .nl-hero h1 { color: var(--bg); }
+
+  .nl-page-form {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+  }
+  @media (max-width: 520px) { .nl-page-form { padding: 1.5rem; } }
+
+  .hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+</style>

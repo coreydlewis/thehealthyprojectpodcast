@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LINKS } from '../lib/links';
+---
+<BaseLayout
+  title="Rate & Review The Healthy Project Podcast"
+  description="Leave a rating and review on Apple Podcasts to help more people discover conversations about health equity, prevention, and community health."
+>
+  <section class="rev-hero section-dark">
+    <div class="container container-narrow">
+      <span class="eyebrow">Reviews</span>
+      <h1>Rate &amp; review The Healthy Project Podcast</h1>
+      <p class="lead" style="color: rgba(255,255,255,.82);">
+        Your review helps more people discover conversations about health equity,
+        prevention, and community health.
+      </p>
+      <a href={LINKS.applePodcasts} target="_blank" rel="noopener" class="btn btn-accent" style="margin-top: 1rem;">
+        Leave a Review on Apple Podcasts
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow prose">
+      <p>
+        Thank you for listening to The Healthy Project Podcast.
+      </p>
+      <p>
+        If an episode made you think differently, helped you in your work, or gave you
+        language for something you care about, take a moment to leave a rating and review
+        on Apple Podcasts.
+      </p>
+      <p>
+        Your support helps the show reach more public health professionals, community
+        advocates, students, healthcare leaders, and people working to build healthier
+        communities.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container container-narrow">
+      <span class="eyebrow">How to leave a review</span>
+      <h2>It takes about 60 seconds.</h2>
+      <ol class="how-steps">
+        <li><span>1</span><div>Click the button below.</div></li>
+        <li><span>2</span><div>Open The Healthy Project Podcast in Apple Podcasts.</div></li>
+        <li><span>3</span><div>Tap the rating section.</div></li>
+        <li><span>4</span><div>Choose your star rating.</div></li>
+        <li><span>5</span><div>Write a short review.</div></li>
+        <li><span>6</span><div>Submit. That's it.</div></li>
+      </ol>
+      <a href={LINKS.applePodcasts} target="_blank" rel="noopener" class="btn btn-primary">
+        Leave a Review on Apple Podcasts
+      </a>
+      <p class="form-note" style="margin-top: 1rem;">
+        Apple Podcasts ratings and reviews are managed through Apple and are visible to creators in
+        Apple Podcasts Connect.
+      </p>
+    </div>
+  </section>
+
+  <section class="section testimonial-form-section">
+    <div class="container container-narrow">
+      <span class="eyebrow">Optional</span>
+      <h2>Want to share a note with Corey too?</h2>
+      <p>
+        You can also send a short message about what the podcast means to you. This does not
+        replace your Apple Podcasts review, but it helps us understand what conversations are
+        connecting with listeners.
+      </p>
+
+      <form
+        class="form-grid"
+        name="reviews-note"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        action="/thanks/?form=reviews-note"
+      >
+        <input type="hidden" name="form-name" value="reviews-note" />
+        <p class="hp-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="r-name">Name</label>
+            <input id="r-name" type="text" name="name" required />
+          </div>
+          <div class="field">
+            <label for="r-email">Email</label>
+            <input id="r-email" type="email" name="email" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="r-rating">Star Rating</label>
+            <select id="r-rating" name="rating">
+              <option value="">Choose a rating</option>
+              <option value="5">★★★★★ — 5 stars</option>
+              <option value="4">★★★★☆ — 4 stars</option>
+              <option value="3">★★★☆☆ — 3 stars</option>
+              <option value="2">★★☆☆☆ — 2 stars</option>
+              <option value="1">★☆☆☆☆ — 1 star</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="r-fav">Favorite Episode</label>
+            <input id="r-fav" type="text" name="favorite_episode" placeholder="Optional" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="r-msg">Your Message</label>
+          <textarea id="r-msg" name="message" required></textarea>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-primary">Send My Note</button>
+        </div>
+        <p class="form-note">After you send this, we'd love for you to leave a public review on Apple Podcasts too.</p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .rev-hero { padding: 5rem 0 4rem; }
+  .rev-hero h1 { color: var(--bg); }
+
+  .how-steps {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 2rem;
+    display: grid;
+    gap: .75rem;
+    counter-reset: step;
+  }
+  .how-steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1.05rem;
+  }
+  .how-steps li > span {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ink);
+    color: var(--gold);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-weight: 600;
+  }
+
+  .hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+</style>

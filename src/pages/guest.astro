@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Be a Guest on The Healthy Project Podcast"
+  description="Pitch yourself or someone else as a guest on The Healthy Project Podcast. We feature people working across public health, healthcare, community advocacy, research, policy, and lived experience."
+>
+  <section class="guest-hero section-dark">
+    <div class="container container-narrow">
+      <span class="eyebrow">Guests</span>
+      <h1>Be a guest on The Healthy Project Podcast</h1>
+      <p class="lead" style="color: rgba(255,255,255,.82);">
+        Have a story, idea, or body of work that can help people better understand health and community?
+        We'd love to hear from you.
+      </p>
+      <a href="#guest-form" class="btn btn-accent" style="margin-top: 1rem;">Submit a Guest Inquiry</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow prose">
+      <p>
+        The Healthy Project Podcast features conversations with people working across public health,
+        healthcare, community advocacy, research, policy, storytelling, and lived experience.
+      </p>
+      <p>
+        We look for guests who can bring insight, clarity, honesty, and practical value to conversations about health.
+      </p>
+    </div>
+  </section>
+
+  <section id="guest-form" class="section section-alt">
+    <div class="container container-narrow">
+      <span class="eyebrow">Pitch</span>
+      <h2>Tell us about you (or your guest)</h2>
+      <p>The more context you give, the better. Pitches don't need to be polished.</p>
+
+      <form
+        class="form-grid"
+        name="guest"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        action="/thanks/?form=guest"
+      >
+        <input type="hidden" name="form-name" value="guest" />
+        <p class="hp-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="g-name">Name</label>
+            <input id="g-name" type="text" name="name" required />
+          </div>
+          <div class="field">
+            <label for="g-email">Email</label>
+            <input id="g-email" type="email" name="email" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="g-org">Organization</label>
+            <input id="g-org" type="text" name="organization" />
+          </div>
+          <div class="field">
+            <label for="g-role">Title or Role</label>
+            <input id="g-role" type="text" name="role" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="g-website">Website or LinkedIn</label>
+          <input id="g-website" type="url" name="website" placeholder="https://" />
+        </div>
+
+        <div class="field">
+          <label for="g-topic">Suggested Topic</label>
+          <input id="g-topic" type="text" name="topic" required />
+        </div>
+
+        <div class="field">
+          <label for="g-why">Why this topic matters now</label>
+          <textarea id="g-why" name="why_now" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="g-media">Previous media or podcast appearances</label>
+          <textarea id="g-media" name="previous_media" placeholder="Links welcome — totally optional"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="g-extra">Anything else we should know?</label>
+          <textarea id="g-extra" name="extra"></textarea>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-accent">Submit Guest Inquiry</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .guest-hero { padding: 5rem 0 4rem; }
+  .guest-hero h1 { color: var(--bg); }
+
+  .hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+</style>

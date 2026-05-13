@@ -1,0 +1,292 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PlatformLinks from '../../components/PlatformLinks.astro';
+import ShareRow from '../../components/ShareRow.astro';
+import ReviewCTA from '../../components/ReviewCTA.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import { getAllEpisodes } from '../../lib/episodes';
+import { SITE, LINKS } from '../../lib/links';
+
+export async function getStaticPaths() {
+  const episodes = await getAllEpisodes();
+  return episodes.map((ep, i) => ({
+    params: { slug: ep.slug },
+    props: { episode: ep, index: i, total: episodes.length }
+  }));
+}
+
+const { episode, index, total } = Astro.props;
+const all = await getAllEpisodes();
+const prev = index > 0 ? all[index - 1] : null;
+const next = index < total - 1 ? all[index + 1] : null;
+
+// Related episodes: share at least one category, exclude self
+const related = all
+  .filter((e) => e.slug !== episode.slug && e.categories.some((c) => episode.categories.includes(c)))
+  .slice(0, 3);
+
+// Plaintext meta description
+const metaDesc =
+  episode.excerpt.length > 30
+    ? episode.excerpt.substring(0, 200)
+    : `${episode.title} — The Healthy Project Podcast with Corey Dion Lewis.`;
+
+// SEO: PodcastEpisode JSON-LD
+const episodeSchema: any = {
+  '@context': 'https://schema.org',
+  '@type': 'PodcastEpisode',
+  url: new URL(episode.url, SITE.url).toString(),
+  name: episode.title,
+  datePublished: episode.pubDate.toISOString(),
+  description: metaDesc,
+  partOfSeries: {
+    '@type': 'PodcastSeries',
+    name: SITE.title,
+    url: SITE.url
+  }
+};
+if (episode.audioUrl) {
+  episodeSchema.associatedMedia = {
+    '@type': 'MediaObject',
+    contentUrl: episode.audioUrl
+  };
+}
+if (episode.durationSeconds) {
+  const mins = Math.round(episode.durationSeconds / 60);
+  episodeSchema.duration = `PT${mins}M`;
+}
+if (episode.imageUrl) episodeSchema.image = episode.imageUrl;
+---
+<BaseLayout
+  title={episode.title}
+  description={metaDesc}
+  ogImage={episode.imageUrl || '/og-image.png'}
+  schema={episodeSchema}
+>
+  <article class="episode-page">
+    <!-- Header -->
+    <header class="ep-hero section-dark">
+      <div class="container ep-hero-inner">
+        <div class="ep-hero-text">
+          <a href="/episodes" class="back-link">← All Episodes</a>
+          <div class="ep-meta-row">
+            {episode.number && <span class="ep-num">Episode {episode.number}</span>}
+            <span>{episode.pubDateDisplay}</span>
+            {episode.durationDisplay && <span>{episode.durationDisplay}</span>}
+          </div>
+          <h1>{episode.title}</h1>
+          {episode.guest && (
+            <p class="ep-guest-line">A conversation with {episode.guest}</p>
+          )}
+          {episode.categories.length > 0 && (
+            <div class="ep-categories">
+              {episode.categories.map((c) => <span class="tag tag-on">{c}</span>)}
+            </div>
+          )}
+        </div>
+        {episode.imageUrl && (
+          <div class="ep-hero-art">
+            <img src={episode.imageUrl} alt={`Artwork for ${episode.title}`} width="500" height="500" />
+          </div>
+        )}
+      </div>
+    </header>
+
+    <!-- Player -->
+    <section class="ep-player-section">
+      <div class="container">
+        <p class="player-label">Listen to the full conversation below.</p>
+        {episode.audioUrl ? (
+          <audio controls preload="none" class="full-audio" src={episode.audioUrl}>
+            Your browser does not support the audio element.
+            <a href={episode.audioUrl}>Download the audio</a>
+          </audio>
+        ) : (
+          <p class="muted">Audio link unavailable. <a href={LINKS.applePodcasts} target="_blank" rel="noopener">Listen on Apple Podcasts →</a></p>
+        )}
+        <div class="player-platforms">
+          <PlatformLinks label="Or listen on:" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Show notes -->
+    <section class="ep-notes">
+      <div class="container-narrow">
+        <h2>About this episode</h2>
+        <hr class="divider-rule" />
+        <div class="prose" set:html={episode.contentHtml} />
+      </div>
+    </section>
+
+    <!-- Share -->
+    <section class="ep-share section-alt">
+      <div class="container-narrow">
+        <h2>Share this episode</h2>
+        <p>Know someone who cares about this topic? Send them this conversation.</p>
+        <ShareRow title={episode.title} url={episode.url} />
+      </div>
+    </section>
+
+    <!-- Related -->
+    {related.length > 0 && (
+      <section class="ep-related">
+        <div class="container">
+          <h2>Related episodes</h2>
+          <hr class="divider-rule" />
+          <div class="related-grid">
+            {related.map((r) => <EpisodeCard episode={r} />)}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Prev / next -->
+    <nav class="ep-nav" aria-label="Episode navigation">
+      <div class="container ep-nav-inner">
+        {prev ? (
+          <a href={prev.url} class="ep-nav-link">
+            <span class="ep-nav-label">← Newer episode</span>
+            <span class="ep-nav-title">{prev.title}</span>
+          </a>
+        ) : <span></span>}
+        {next ? (
+          <a href={next.url} class="ep-nav-link right">
+            <span class="ep-nav-label">Older episode →</span>
+            <span class="ep-nav-title">{next.title}</span>
+          </a>
+        ) : <span></span>}
+      </div>
+    </nav>
+
+    <!-- Review CTA -->
+    <ReviewCTA
+      variant="dark"
+      headline="Help more people find these conversations"
+      copy="Your rating and review helps The Healthy Project Podcast reach more listeners who care about health equity and community change."
+    />
+  </article>
+</BaseLayout>
+
+<style>
+  .episode-page { background: var(--bg); }
+
+  .ep-hero { padding: 4rem 0 5rem; }
+  .ep-hero-inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 880px) {
+    .ep-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .back-link {
+    display: inline-block;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: .88rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5rem;
+  }
+  .back-link:hover { color: var(--bg); }
+
+  .ep-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.7);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .ep-num { color: var(--gold); }
+
+  .ep-hero h1 { color: var(--bg); margin-bottom: 1rem; }
+  .ep-guest-line {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+  }
+
+  .ep-categories { display: flex; flex-wrap: wrap; gap: .35rem; }
+
+  .ep-hero-art {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .ep-hero-art img { width: 100%; height: auto; display: block; }
+
+  .ep-player-section {
+    padding: 3rem 0 2.5rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .player-label {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+  .full-audio { width: 100%; margin-bottom: 1.5rem; }
+  .player-platforms { margin-top: 1.5rem; }
+
+  .ep-notes { padding: 4.5rem 0 4rem; }
+  .ep-notes h2 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); }
+
+  .ep-share { padding: 4rem 0; }
+  .ep-share h2 { margin-bottom: .6rem; }
+  .ep-share p { color: var(--ink-soft); margin-bottom: 1.5rem; }
+
+  .ep-related { padding: 4.5rem 0; background: var(--bg); }
+  .ep-related h2 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); }
+  .related-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+
+  .ep-nav {
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 0;
+  }
+  .ep-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 720px) {
+    .ep-nav-inner { grid-template-columns: 1fr; gap: 1.25rem; }
+  }
+  .ep-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    text-decoration: none;
+    color: var(--ink);
+    max-width: 36ch;
+  }
+  .ep-nav-link.right { text-align: right; margin-left: auto; }
+  @media (max-width: 720px) {
+    .ep-nav-link.right { text-align: left; margin-left: 0; }
+  }
+  .ep-nav-label {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .ep-nav-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    line-height: 1.25;
+  }
+  .ep-nav-link:hover .ep-nav-title { color: var(--clay); }
+</style>

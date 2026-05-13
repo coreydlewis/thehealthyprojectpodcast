@@ -1,0 +1,105 @@
+---
+import { LINKS } from '../lib/links';
+export interface Props {
+  variant?: 'default' | 'inline' | 'dark';
+}
+const { variant = 'default' } = Astro.props as Props;
+---
+<section class:list={['newsletter-cta', variant]}>
+  <div class="container nl-inner">
+    <div class="nl-copy">
+      <span class="eyebrow">Newsletter</span>
+      <h2>Get new episodes and public health stories in your inbox.</h2>
+      <p>
+        Join the Healthy Project email list for new episodes, reflections,
+        resources, and stories about health equity, prevention, and community health.
+      </p>
+    </div>
+
+    <form
+      class="nl-form"
+      name="newsletter"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      action="/thanks/?form=newsletter"
+    >
+      <input type="hidden" name="form-name" value="newsletter" />
+      <p class="hp-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="nl-first">First Name</label>
+          <input id="nl-first" type="text" name="first_name" autocomplete="given-name" required />
+        </div>
+        <div class="field">
+          <label for="nl-email">Email Address</label>
+          <input id="nl-email" type="email" name="email" autocomplete="email" required />
+        </div>
+      </div>
+
+      <div class="nl-actions">
+        <button type="submit" class="btn btn-accent">Join the List</button>
+        <a href={LINKS.substack} target="_blank" rel="noopener" class="nl-substack">
+          Or subscribe on Substack →
+        </a>
+      </div>
+
+      <p class="form-note">No spam. Unsubscribe anytime.</p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .newsletter-cta {
+    background: var(--bg-alt);
+    padding: 5rem 0;
+  }
+  .newsletter-cta.dark {
+    background: var(--bg-deep);
+    color: var(--bg);
+  }
+  .newsletter-cta.dark h2 { color: var(--bg); }
+  .newsletter-cta.dark p { color: rgba(255,255,255,.78); }
+  .newsletter-cta.dark .eyebrow { color: var(--gold); }
+  .newsletter-cta.dark .field label { color: rgba(255,255,255,.7); }
+  .newsletter-cta.dark .field input {
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.18);
+    color: var(--bg);
+  }
+  .newsletter-cta.dark .nl-substack { color: var(--gold); }
+  .newsletter-cta.dark .form-note { color: rgba(255,255,255,.55); }
+
+  .nl-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (max-width: 880px) {
+    .nl-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .nl-copy h2 { margin-bottom: 1rem; }
+  .nl-copy p { color: var(--ink-soft); max-width: 50ch; }
+
+  .hp-field { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+
+  .nl-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-top: 1.4rem;
+  }
+  .nl-substack {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: .9rem;
+    font-weight: 500;
+  }
+  .nl-substack:hover { color: var(--clay); }
+
+  .nl-form .form-note { margin-top: 1rem; }
+</style>

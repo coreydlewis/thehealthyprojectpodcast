@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 640" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1F1814"/>
+      <stop offset="1" stop-color="#2D2218"/>
+    </linearGradient>
+  </defs>
+  <rect width="540" height="640" fill="url(#bg)"/>
+  <circle cx="270" cy="240" r="92" fill="#3A2C20"/>
+  <path d="M120 540 C 120 420, 200 360, 270 360 C 340 360, 420 420, 420 540 L 420 640 L 120 640 Z" fill="#3A2C20"/>
+  <text x="270" y="100" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#C8932B" letter-spacing="0.2em">CORE Y  D ION  L EWIS</text>
+  <text x="270" y="600" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="#75695B" letter-spacing="0.18em">REPLACE WITH PORTRAIT PHOTO</text>
+</svg>

@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ReviewCTA from '../components/ReviewCTA.astro';
+import NewsletterCTA from '../components/NewsletterCTA.astro';
+---
+<BaseLayout
+  title="About The Healthy Project Podcast"
+  description="The Healthy Project Podcast is a public health show rooted in storytelling, culture, and community. Hosted by Corey Dion Lewis."
+>
+  <section class="about-hero section-dark">
+    <div class="container container-narrow">
+      <span class="eyebrow">About</span>
+      <h1>About The Healthy Project Podcast</h1>
+      <p class="lead" style="color: rgba(255,255,255,.82);">
+        Public health conversations rooted in storytelling, culture, and community.
+      </p>
+    </div>
+  </section>
+
+  <section class="about-body section">
+    <div class="container container-narrow prose">
+      <p>
+        The Healthy Project Podcast was created to make public health more human.
+      </p>
+      <p>
+        Hosted by Corey Dion Lewis, the show brings together leaders, advocates, clinicians,
+        researchers, creators, and community voices to talk about the real factors that shape health.
+      </p>
+      <p>
+        The podcast explores more than health advice. It looks at the systems, stories,
+        and lived experiences behind health outcomes.
+      </p>
+      <p>
+        From social determinants of health to prevention, mental health, chronic disease,
+        food access, policy, and culture — each episode helps listeners better understand
+        what it takes to build healthier communities.
+      </p>
+    </div>
+  </section>
+
+  <section class="mission section-alt">
+    <div class="container container-narrow">
+      <span class="eyebrow">Our mission</span>
+      <h2>To use storytelling to move public health forward.</h2>
+      <p class="lead">
+        To use storytelling and public health conversations to educate, inspire,
+        and equip people working to create healthier communities.
+      </p>
+    </div>
+  </section>
+
+  <section class="host section">
+    <div class="container host-grid">
+      <div class="host-photo">
+        <img src="/images/corey-placeholder.svg" alt="Corey Dion Lewis" width="540" height="640" />
+      </div>
+      <div class="host-text">
+        <span class="eyebrow">Meet the host</span>
+        <h2>Corey Dion Lewis</h2>
+        <p>
+          Corey Dion Lewis is a public health storyteller, podcast host, health equity
+          advocate, and founder of The Healthy Project.
+        </p>
+        <p>
+          Through podcasts, documentary-style content, writing, and community-centered media,
+          Corey helps make public health more accessible, practical, and culturally relevant.
+        </p>
+        <p>
+          His work sits at the intersection of prevention, storytelling, community health,
+          and health equity.
+        </p>
+        <div class="host-actions">
+          <a href="/invite-corey" class="btn btn-primary">Invite Corey to Speak</a>
+          <a href="/contact" class="btn btn-ghost">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="why section section-dark">
+    <div class="container container-narrow">
+      <span class="eyebrow">Why this work matters</span>
+      <h2>Health is shaped by more than individual choices.</h2>
+      <p>
+        It's shaped by access, income, housing, food, transportation, stress, safety,
+        education, and the systems people interact with every day.
+      </p>
+      <p>
+        The Healthy Project Podcast exists to tell those stories clearly, honestly,
+        and in a way that moves people toward action.
+      </p>
+    </div>
+  </section>
+
+  <ReviewCTA />
+  <NewsletterCTA />
+</BaseLayout>
+
+<style>
+  .about-hero { padding: 5rem 0 4rem; }
+  .about-hero h1 { color: var(--bg); }
+
+  .about-body .prose { font-size: 1.15rem; }
+
+  .mission { padding: 5rem 0; text-align: center; }
+  .mission h2 { max-width: 22ch; margin-left: auto; margin-right: auto; }
+  .mission .lead { max-width: 56ch; margin-left: auto; margin-right: auto; }
+
+  .host-grid {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (max-width: 880px) {
+    .host-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+  .host-photo {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: var(--bg-alt);
+  }
+  .host-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .host-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+
+  .why { padding: 5rem 0; }
+  .why h2 { color: var(--bg); }
+  .why p { color: rgba(255,255,255,.8); font-size: 1.1rem; }
+</style>

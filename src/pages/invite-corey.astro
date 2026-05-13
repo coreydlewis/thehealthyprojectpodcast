@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Invite Corey Dion Lewis to Speak"
+  description="Book Corey Dion Lewis for speaking, panels, workshops, podcast appearances, and moderating on public health, prevention, and health equity."
+>
+  <section class="speak-hero section-dark">
+    <div class="container container-narrow">
+      <span class="eyebrow">Speaking</span>
+      <h1>Invite Corey to speak</h1>
+      <p class="lead" style="color: rgba(255,255,255,.82);">
+        Storytelling, public health, prevention, and health equity — in a voice people can connect with.
+      </p>
+      <a href="#speak-form" class="btn btn-accent" style="margin-top: 1rem;">Submit a Speaking Inquiry</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow prose">
+      <p>
+        Corey Dion Lewis speaks on the intersection of public health, prevention, storytelling,
+        community outreach, podcasting, and health equity.
+      </p>
+      <p>
+        His talks help audiences understand how health is shaped by systems, stories, access,
+        and lived experience.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Speaking topics</span>
+        <h2>Talks that connect public health with culture and community.</h2>
+      </div>
+
+      <ul class="topics-grid">
+        <li>
+          <h3>Making public health culturally relevant</h3>
+          <p>Reaching audiences with messaging that respects identity, community, and lived experience.</p>
+        </li>
+        <li>
+          <h3>Storytelling as a tool for health equity</h3>
+          <p>Using narrative to move people from awareness to action on the social drivers of health.</p>
+        </li>
+        <li>
+          <h3>Social determinants of health in real life</h3>
+          <p>Translating SDOH frameworks into the everyday realities of the people we serve.</p>
+        </li>
+        <li>
+          <h3>Prevention and community-centered care</h3>
+          <p>Designing prevention efforts that meet people where they live, work, and gather.</p>
+        </li>
+        <li>
+          <h3>Podcasting as community outreach</h3>
+          <p>How public health organizations can use audio to build trust and reach new audiences.</p>
+        </li>
+        <li>
+          <h3>Building trust through media and messaging</h3>
+          <p>Honest, transparent communication in an era of misinformation and skepticism.</p>
+        </li>
+        <li>
+          <h3>Health equity, culture, and communication</h3>
+          <p>How public health professionals can communicate across difference and lead with care.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="speak-form" class="section">
+    <div class="container container-narrow">
+      <span class="eyebrow">Booking</span>
+      <h2>Submit a speaking inquiry</h2>
+      <p>Share the details of your event and we'll be in touch.</p>
+
+      <form
+        class="form-grid"
+        name="speaking"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        action="/thanks/?form=speaking"
+      >
+        <input type="hidden" name="form-name" value="speaking" />
+        <p class="hp-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="s-name">Name</label>
+            <input id="s-name" type="text" name="name" required />
+          </div>
+          <div class="field">
+            <label for="s-org">Organization</label>
+            <input id="s-org" type="text" name="organization" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="s-email">Email</label>
+            <input id="s-email" type="email" name="email" required />
+          </div>
+          <div class="field">
+            <label for="s-date">Event Date</label>
+            <input id="s-date" type="date" name="event_date" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="s-location">Event Location</label>
+            <input id="s-location" type="text" name="event_location" placeholder="City, state, or virtual" />
+          </div>
+          <div class="field">
+            <label for="s-format">Speaking Format</label>
+            <select id="s-format" name="speaking_format">
+              <option value="">Select a format</option>
+              <option>Keynote</option>
+              <option>Panel</option>
+              <option>Moderator / Host</option>
+              <option>Workshop</option>
+              <option>Live podcast recording</option>
+              <option>Fireside chat</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="s-topic">Topic of Interest</label>
+            <input id="s-topic" type="text" name="topic" placeholder="e.g., Health equity, storytelling, prevention" />
+          </div>
+          <div class="field">
+            <label for="s-budget">Budget</label>
+            <input id="s-budget" type="text" name="budget" placeholder="Approximate range" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="s-msg">Message</label>
+          <textarea id="s-msg" name="message" required placeholder="Tell us about the event, the audience, and what you're hoping for."></textarea>
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-accent">Submit Speaking Inquiry</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .speak-hero { padding: 5rem 0 4rem; }
+  .speak-hero h1 { color: var(--bg); }
+
+  .section-head { margin-bottom: 2.5rem; }
+
+  .topics-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 720px) { .topics-grid { grid-template-columns: 1fr; } }
+  .topics-grid li {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+  }
+  .topics-grid h3 { font-size: 1.2rem; margin-bottom: .5rem; }
+  .topics-grid p { color: var(--ink-soft); margin: 0; font-size: .95rem; }
+
+  .hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+</style>
